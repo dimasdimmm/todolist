@@ -39,9 +39,13 @@
                 $('#todoName').on('keyup',function(e){
                     if($(this).val()!='' && $(this).val().length>0 ){
                         $('#add').removeAttr('disabled');
+                        $('#textBefore').hide();
                     }else{
                         $('#add').attr('disabled','disabled');
+                        $('#textBefore').show();
+                        $('#typingTodoName').val('');
                     }
+                    $('#typingTodoName').html(' : '+$(this).val());
                 });
                 $('#add').on('click', function(e) {
                     e.preventDefault();
@@ -49,8 +53,13 @@
                     var url     = "{{route('list_todo_post')}}",
                         data    = {todoName:todoName, _token : '{{csrf_token()}}'};
                     $.post(url, data, function(data) {
-                        loadData();
+                        if(data==1){
+                            loadData();
+                        }else{
+                            alert("Data Gagal disimpan, terjadi kesalahan");
+                        }
                         $('#todoName').val('');
+                        $('#add').attr('disabled','disabled');
                     }, 'json');
 
                     return false;
@@ -93,6 +102,8 @@
                     $.post(url, data, function(data) {
                         if(data==1){
                             loadData();    
+                        }else{
+                            alert("Gagal hapus Data");
                         }
                     }, 'json');
                     return false;
@@ -113,6 +124,8 @@
                 jQuery.post(url, data, function(result) {
                     if(result==1){
                         loadData();    
+                    }else{
+                        alert("Gagal hapus Data");
                     }
                     
                 }, 'json');
@@ -143,7 +156,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <span>Typing</span> <span id="typingTodoName"></span>          
+                            <span>Typing</span> <span id= "textBefore"> in a new todo</span> <span id="typingTodoName"></span>          
                         </div>
                     </div>
                     <div class="row">
