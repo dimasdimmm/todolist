@@ -43,11 +43,19 @@ class TodoController extends Controller
 		if($id<>''){
 			$todo = Todo::find($id);
 			$todo->delete();
-			echo "1";
+			if(!$todo){
+				echo "0";
+			}else{
+				echo "1";
+			}
 		}
 		if($id_in<>''){
 			$todo = Todo::whereIn('id', explode(",",$id_in))->delete();
-			echo "1";
+			if(!$todo){	
+				echo "0";
+			}else{
+				echo "1";	
+			}	
 		}
 		//echo $id_in;
 	}
